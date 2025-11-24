@@ -1,0 +1,11 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+
+# Temporary files
+.~lock.*
+*.swp
+*.swo
+
+# Processed data
+data/processed/
