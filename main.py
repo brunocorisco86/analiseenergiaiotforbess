@@ -69,6 +69,19 @@ def main():
             # Join the data
             data_excel_processed = pd.merge(data_excel_processed, aviary_area_data, on='aviario', how='left')
 
+        # Load the second dataset to join
+        data_loader_lotes = DataLoader(assets_path='assets/dados_lotes_filtrados_projeto_BESS.csv', data_path=None)
+        data_loader_lotes.load_csv_data()
+        data_lotes = data_loader_lotes.get_data()
+
+        if not data_lotes.empty:
+            data_lotes = data_lotes.rename(columns={'Número Composto': 'lote_composto'})
+            # ensure 'lote_composto' is of the same type in both dataframes
+            data_excel_processed['lote_composto'] = data_excel_processed['lote_composto'].astype(str)
+            data_lotes['lote_composto'] = data_lotes['lote_composto'].astype(str)
+            
+            data_excel_processed = pd.merge(data_excel_processed, data_lotes, on='lote_composto', how='left')
+
         # Save the processed data
         data_saver = DataSaver(data_excel_processed)
         data_saver.to_csv(processed_csv_path)
