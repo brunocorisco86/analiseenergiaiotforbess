@@ -60,7 +60,7 @@ def main():
         
         if not aviary_area_data.empty:
             # Extract aviary number from source_file
-            data_excel_processed['aviario'] = data_excel_processed['source_file'].str.split('-').str[0]
+            data_excel_processed['aviario'] = data_excel_processed['lote_composto'].str.split('-').str[0]
             # Convert aviario column to int64 to match the aviary_area_data
             data_excel_processed['aviario'] = data_excel_processed['aviario'].astype('int64')
             aviary_area_data['aviario'] = aviary_area_data['aviario'].astype('int64')

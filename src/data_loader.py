@@ -51,7 +51,7 @@ class DataLoader:
                     logger.info(f"Reading file: {file_path}")
                     try:
                         df = pd.read_excel(file_path)
-                        df['source_file'] = file
+                        df['lote_composto'] = file
                         all_files.append(df)
                     except Exception as e:
                         logger.error(f"Error reading file {file_path}: {e}")

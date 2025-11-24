@@ -87,17 +87,17 @@ class DataCleaner:
 
     def remove_xlsx_suffix(self):
         """
-        This method removes the '.xlsx' suffix from the 'source_file' column.
+        This method removes the '.xlsx' suffix from the 'lote_composto' column.
         """
         if self.data is None or self.data.empty:
             logger.warning("No data to remove .xlsx suffix.")
             return
 
-        logger.info("Removing '.xlsx' suffix from 'source_file' column.")
-        if 'source_file' in self.data.columns:
-            self.data['source_file'] = self.data['source_file'].astype(str).str.replace('.xlsx', '', regex=False)
+        logger.info("Removing '.xlsx' suffix from 'lote_composto' column.")
+        if 'lote_composto' in self.data.columns:
+            self.data['lote_composto'] = self.data['lote_composto'].astype(str).str.replace('.xlsx', '', regex=False)
         else:
-            logger.warning("Column 'source_file' not found in the data. Skipping removing .xlsx suffix.")
+            logger.warning("Column 'lote_composto' not found in the data. Skipping removing .xlsx suffix.")
 
     def get_data(self):
         """
