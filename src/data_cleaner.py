@@ -99,6 +99,29 @@ class DataCleaner:
         else:
             logger.warning("Column 'lote_composto' not found in the data. Skipping removing .xlsx suffix.")
 
+    def merge_coordinates(self, coordinates_path):
+        """
+        This method merges the data with the coordinates data.
+        """
+        if self.data is None or self.data.empty:
+            logger.warning("No data to merge with coordinates.")
+            return
+
+        logger.info("Merging data with coordinates.")
+        try:
+            coordenadas_df = pd.read_csv(coordinates_path, sep=';')
+            coordenadas_df = coordenadas_df[['n° dos aviários', 'Latitude', 'Longitude']]
+            coordenadas_df = coordenadas_df.rename(columns={'n° dos aviários': 'aviario'})
+
+            self.data['aviario'] = self.data['lote_composto'].str.split('-').str[0]
+            self.data['aviario'] = self.data['aviario'].astype('int64')
+            coordenadas_df['aviario'] = coordenadas_df['aviario'].astype('int64')
+
+            self.data = pd.merge(self.data, coordenadas_df, on='aviario', how='left')
+            logger.info("Successfully merged data with coordinates.")
+        except Exception as e:
+            logger.error(f"Failed to merge coordinates: {e}")
+
     def get_data(self):
         """
         This method returns the cleaned data.

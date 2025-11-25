@@ -40,6 +40,7 @@ def main():
     processed_csv_path = 'data/processed/dados_processados.csv'
     processed_db_path = 'data/processed/dados_processados.db'
     aviary_area_path = 'assets/area_aviarios.md'
+    coordinates_path = 'assets/coordenadas.csv'
 
     data_loader_excel = DataLoader(assets_path=None, data_path=data_path)
     data_loader_excel.load_excel_data()
@@ -52,6 +53,7 @@ def main():
         data_cleaner.filter_energy_consumption() # Apply energy consumption filter
         data_cleaner.rename_and_extract_day() # Rename and extract day
         data_cleaner.remove_xlsx_suffix() # Remove .xlsx suffix
+        data_cleaner.merge_coordinates(coordinates_path) # Merge coordinates
         data_excel_processed = data_cleaner.get_data() # Get cleaned data
 
         # Load aviary area data
@@ -59,12 +61,8 @@ def main():
         aviary_area_data = aviary_loader.load_aviary_area(aviary_area_path)
         
         if not aviary_area_data.empty:
-            # Extract aviary number from source_file
-            data_excel_processed['aviario'] = data_excel_processed['lote_composto'].str.split('-').str[0]
             # Convert aviario column to int64 to match the aviary_area_data
-            data_excel_processed['aviario'] = data_excel_processed['aviario'].astype('int64')
             aviary_area_data['aviario'] = aviary_area_data['aviario'].astype('int64')
-
 
             # Join the data
             data_excel_processed = pd.merge(data_excel_processed, aviary_area_data, on='aviario', how='left')
