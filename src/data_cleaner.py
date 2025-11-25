@@ -25,7 +25,9 @@ class DataCleaner:
         logger.info("Filtering excel data.")
         # Filter out rows where 'Semanas' contains 'semana' (case-insensitive)
         if 'Semanas' in self.data.columns:
-            self.data = self.data[~self.data['Semanas'].astype(str).str.contains('semana', case=False, na=False)]
+            unwanted_keywords = ['semana', 'ALOJAMENTO', 'PRÉ-ALOJAMENTO', 'ACUMULADO DO LOTE:']
+            for keyword in unwanted_keywords:
+                self.data = self.data[~self.data['Semanas'].astype(str).str.contains(keyword, case=False, na=False)]
         else:
             logger.warning("Column 'Semanas' not found in the data. Skipping this filter.")
         
